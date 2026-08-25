@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 
-const app = express();
+export const app = express();
 
 app.use(cors());
 app.use(express.json());
@@ -17,7 +17,7 @@ app.use(express.json()); //middleware for JSON conversion of req.body
 
 // יצירת טוקן ובדיקת אותנטיקציה
 
-const authenticateUser= (req, res, next) => {
+export const authenticateUser= (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -669,6 +669,4 @@ app.delete("/households/:id", authenticateUser, async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log("Server running on http://localhost:3001");
-});
+

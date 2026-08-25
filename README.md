@@ -25,18 +25,7 @@ Emergency Response System is a system for managing the real-time status of house
 - View the latest status of all households in a centralized dashboard.
 ## Technologies Used
 
-### Frontend
-- React
-- Vite
-- JavaScript
-- HTML5
-- CSS3
-
-### Backend
-- Node.js
-- Express.js
-
-### Database
+### Frontendר'כ### Database
 - PostgreSQL
 - Prisma ORM
 
