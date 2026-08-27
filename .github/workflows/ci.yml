@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Run server tests
+        working-directory: server
+        run: npm test
+
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build client Docker image
+        run: docker build ./client
+
+      - name: Build server Docker image
+        run: docker build ./server
+  
+  client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install client dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Run client lint
+        working-directory: client
+        run: npm run lint
+
+      - name: Build client
+        working-directory: client
+        run: npm run build
