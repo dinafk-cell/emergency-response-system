@@ -3,7 +3,6 @@ import { useState } from "react";
 
 export default function HouseholdRow({
   household,
-  onUpdateStatus,
   onDeleted,
   statusMeta,
   handleSaveHouseholdStatus,

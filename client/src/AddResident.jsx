@@ -3,7 +3,6 @@ import { useState } from "react";
 export default function AddResident({
   onAddResident,
   onClose,
-  staffTzahiMembers,
 }) {
   const [area, setArea] = useState("");
   const [address, setAddress] = useState("");

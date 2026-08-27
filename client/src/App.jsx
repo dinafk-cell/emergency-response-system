@@ -70,8 +70,47 @@ export default function App() {
     localStorage.setItem("residents", JSON.stringify(residents));
   }, [residents]);
 
+  async function fetchHouseholds() {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://localhost:3001/current-status", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+        return;
+      }
+
+      const data = await response.json();
+
+      const householdsFromServer = data.map((household) => {
+        const latestStatus = household.statusUpdates[0];
+
+        return {
+          ...household,
+          status: latestStatus?.status || "no_answer",
+          currentAtHome: latestStatus?.currentAtHome || 0,
+          lastUpdated: latestStatus?.lastUpdated || null,
+          updatedBy: latestStatus?.user?.name || "",
+          area: household.area,
+        };
+      });
+
+      setResidents(householdsFromServer);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     if (isLoggedIn) {
+      // Fetch household data when the user logs in
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchHouseholds();
     }
   }, [isLoggedIn]);
@@ -139,8 +178,6 @@ export default function App() {
         return;
       }
 
-      const result = await response.json();
-
       await fetchHouseholds();
     };
 
@@ -182,7 +219,6 @@ export default function App() {
       return;
     }
 
-    const result = await response.json();
 
     await fetchHouseholds();
   }
@@ -230,42 +266,7 @@ export default function App() {
 
     XLSX.writeFile(workbook, "residents.xlsx");
   }
-  async function fetchHouseholds() {
-    try {
-      const token = localStorage.getItem("token");
-
-      const response = await fetch("http://localhost:3001/current-status", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 401) {
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
-        return;
-      }
-
-      const data = await response.json();
-
-      const householdsFromServer = data.map((household) => {
-        const latestStatus = household.statusUpdates[0];
-
-        return {
-          ...household,
-          status: latestStatus?.status || "no_answer",
-          currentAtHome: latestStatus?.currentAtHome || 0,
-          lastUpdated: latestStatus?.lastUpdated || null,
-          updatedBy: latestStatus?.user?.name || "",
-          area: household.area,
-        };
-      });
-
-      setResidents(householdsFromServer);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  
 
   function handleLogout() {
     localStorage.removeItem("token");
@@ -294,8 +295,6 @@ export default function App() {
         setIsLoggedIn(false);
         return;
       }
-
-      const data = await response.json();
 
       await fetchHouseholds();
       setSaveMessage("Status updated successfully!");

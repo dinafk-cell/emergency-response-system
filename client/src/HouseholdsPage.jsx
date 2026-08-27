@@ -5,7 +5,6 @@ import { useState } from "react";
 
 export default function HouseholdsPage({
   filteredResidentsStatus,
-  onUpdateStatus,
   handleDelete,
   handleAddHousehold,
   showAddForm,
@@ -17,7 +16,6 @@ export default function HouseholdsPage({
   STATUS_META,
   staffMembers,
   setView,
-  residents,
   exportResidentsToExcel,
   handleSaveHouseholdStatus,
 }) {
@@ -129,7 +127,6 @@ export default function HouseholdsPage({
               <HouseholdRow
                 key={household.id}
                 household={household}
-                onUpdateStatus={onUpdateStatus}
                 onDeleted={handleDelete}
                 statusMeta={STATUS_META}
                 handleSaveHouseholdStatus={handleSaveHouseholdStatus}
