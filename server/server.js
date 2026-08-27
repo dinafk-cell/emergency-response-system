@@ -4,18 +4,41 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cors from "cors";
+import fs from "fs";
+import path from "path";
 
 export const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+
+// מידלוור- כתיבת לוגים לקובץ
+const logDir = path.join(process.cwd(), "logs");
+
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
+
+const logFile = path.join(logDir, "app.log");
+
+app.use((req, res, next) => {
+  const message = `[REQUEST] ${req.method} ${req.originalUrl}`;
+
+  console.log(message);
+  fs.appendFileSync(logFile, message + "\n");
+
+  next();
+});
+
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const prisma = new PrismaClient();
 
 app.use(express.json()); //middleware for JSON conversion of req.body
 
-// יצירת טוקן ובדיקת אותנטיקציה
+// Authentication middleware:
+// verifies the JWT token and attaches the decoded user to req.user
 
 export const authenticateUser= (req, res, next) => {
   try {
@@ -496,7 +519,7 @@ app.get("/current-status", authenticateUser, async (req, res) => {
 
 //בדיקת משתמש
 
-app.post("/login", async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -544,7 +567,8 @@ app.post("/login", async (req, res) => {
       message: "Server error",
     });
   }
-});
+};
+app.post("/login",login);
 
 app.get("/statusupdates", authenticateUser, async (req, res) => {
   try {
