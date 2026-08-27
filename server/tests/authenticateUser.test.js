@@ -8,6 +8,7 @@ vi.mock("jsonwebtoken", () => ({
 }));
 
 import { authenticateUser } from "../server.js";
+
 beforeEach(() => {
   vi.resetAllMocks();
 });
