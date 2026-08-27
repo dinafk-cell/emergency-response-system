@@ -1,0 +1,27 @@
+
+[SERVER]
+@prisma/client - Apache-2.0
+bcrypt - MIT
+cors - MIT
+dotenv - BSD-2-Clause
+express - MIT
+jsonwebtoken - MIT
+prisma - Apache-2.0
+@vitest/coverage-v8 - MIT
+supertest - MIT
+vitest - MIT
+
+[CLIENT]
+react - MIT
+react-dom - MIT
+react-icons - MIT
+xlsx - Apache-2.0
+@eslint/js - MIT
+@types/react - MIT
+@types/react-dom - MIT
+@vitejs/plugin-react - MIT
+eslint - MIT
+eslint-plugin-react-hooks - MIT
+eslint-plugin-react-refresh - MIT
+globals - MIT
+vite - MIT
