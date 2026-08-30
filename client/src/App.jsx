@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import HouseholdsPage from "./HouseholdsPage";
 import * as XLSX from "xlsx";
 import Login from "./Login";
+import API_URL from "./api";
 
 export default function App() {
   const [currentView, setView] = useState("dashboard");
@@ -74,7 +75,7 @@ export default function App() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:3001/current-status", {
+      const response = await fetch(`${API_URL}/current-status`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -163,7 +164,7 @@ export default function App() {
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:3001/import-households", {
+      const response = await fetch(`${API_URL}/import-households`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +205,7 @@ export default function App() {
 
   async function handleAddHousehold(newResidentData) {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:3001/households", {
+    const response = await fetch(`${API_URL}/households`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -228,7 +229,7 @@ export default function App() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/households/${householdId}`,
+      `${API_URL}/households/${householdId}`,
         {
           method: "DELETE",
           headers: {
@@ -277,7 +278,7 @@ export default function App() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:3001/statusupdate", {
+      const response = await fetch(`${API_URL}/statusupdate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

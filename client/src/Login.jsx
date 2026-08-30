@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_URL from "./api";
 
 export default function Login({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ export default function Login({ onLogin }) {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3001/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
